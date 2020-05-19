@@ -101,10 +101,10 @@ service TodoModelService {
     // Read todo task
     rpc Read(ReadRequest) returns (ReadResponse);
 
-    // // Update todo task;
+    // Update todo task;
     rpc Update(UpdateRequest) returns (UpdateResponse);
-    // // Delete todo task
-    // rpc Delete(DeleteRequest) returns (DeleteResponse);
+    // Delete todo task
+    rpc Delete(DeleteRequest) returns (DeleteResponse);
 
     // // Read all todo tasks
     // rpc ReadAll(ReadAllRequest) returns (ReadAllResponse);

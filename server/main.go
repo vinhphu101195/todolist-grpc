@@ -57,14 +57,14 @@ func (s *server) Read(ctx context.Context, request *proto.ReadRequest) (*proto.R
 
 	}
 
-	completed := false
-	if todo.Completed == 1 {
-		completed = true
+	complete := false
+	if todo.Completed == 0 {
+		complete = false
 	} else {
-		completed = false
+		complete = true
 	}
 
-	result := proto.TransformedTodo{Id: todo.Id, Title: todo.Title, Completed: completed, Userid: todo.Userid}
+	result := proto.TransformedTodo{Id: todo.Id, Title: todo.Title, Completed: complete, Userid: todo.Userid}
 	return &proto.ReadResponse{ToDo: &result}, nil
 }
 
@@ -87,3 +87,5 @@ func (s *server) Update(ctx context.Context, request *proto.UpdateRequest) (*pro
 	return &proto.UpdateResponse{KeyUpdated: true}, nil
 
 }
+
+func ()
