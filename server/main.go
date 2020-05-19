@@ -85,7 +85,6 @@ func (s *server) Update(ctx context.Context, request *proto.UpdateRequest) (*pro
 	db.Model(&todo).Update("completed", completed)
 
 	return &proto.UpdateResponse{KeyUpdated: true}, nil
-
 }
 
 func (s *server) Delete(ctx context.Context, request *proto.DeleteRequest) (*proto.DeleteResponse, error) {
@@ -101,5 +100,29 @@ func (s *server) Delete(ctx context.Context, request *proto.DeleteRequest) (*pro
 
 	db.Delete(&todo)
 	return &proto.DeleteResponse{KeyDeleted: true}, nil
+}
+
+func (s *server) ReadAll(ctx context.Context, request *proto.ReadAllRequest) (*proto.ReadAllResponse, error) {
+	db := s.db
+
+	var todos []proto.TodoModel
+	_todos := []*proto.TransformedTodo{}
+
+	db.Find(&todos)
+	if len(todos) <= 0 {
+		return nil, status.Error(codes.Unknown, "No todo found!")
+	}
+
+	for _, item := range todos {
+		completed := false
+		if item.Completed == 1 {
+			completed = true
+		} else {
+			completed = false
+		}
+		_todos = append(_todos, &proto.TransformedTodo{Id: item.Id, Title: item.Title, Completed: completed, Userid: item.Userid})
+	}
+
+	return &proto.ReadAllResponse{ToDos: _todos}, nil
 
 }

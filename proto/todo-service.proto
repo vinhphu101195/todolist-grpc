@@ -82,16 +82,16 @@ message DeleteResponse{
     bool keyDeleted = 1;
 }
 
-// // Request data to read all todo task
-// message ReadAllRequest{
-// }
+// Request data to read all todo task
+message ReadAllRequest{
+}
 
-// // Contains list of all todo tasks
-// message ReadAllResponse{
+// Contains list of all todo tasks
+message ReadAllResponse{
 
-//     // List of all todo tasks
-//     repeated TodoModel toDos = 2;
-// }
+    // List of all todo tasks
+    repeated TransformedTodo toDos = 1;
+}
 
 // Service to manage list of todo tasks
 service TodoModelService {
@@ -106,6 +106,6 @@ service TodoModelService {
     // Delete todo task
     rpc Delete(DeleteRequest) returns (DeleteResponse);
 
-    // // Read all todo tasks
-    // rpc ReadAll(ReadAllRequest) returns (ReadAllResponse);
+    // Read all todo tasks
+    rpc ReadAll(ReadAllRequest) returns (ReadAllResponse);
 }

@@ -568,6 +568,94 @@ func (x *DeleteResponse) GetKeyDeleted() bool {
 	return false
 }
 
+// Request data to read all todo task
+type ReadAllRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ReadAllRequest) Reset() {
+	*x = ReadAllRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_todo_service_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ReadAllRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReadAllRequest) ProtoMessage() {}
+
+func (x *ReadAllRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_todo_service_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReadAllRequest.ProtoReflect.Descriptor instead.
+func (*ReadAllRequest) Descriptor() ([]byte, []int) {
+	return file_todo_service_proto_rawDescGZIP(), []int{10}
+}
+
+// Contains list of all todo tasks
+type ReadAllResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// List of all todo tasks
+	ToDos []*TransformedTodo `protobuf:"bytes,1,rep,name=toDos,proto3" json:"toDos,omitempty"`
+}
+
+func (x *ReadAllResponse) Reset() {
+	*x = ReadAllResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_todo_service_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ReadAllResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReadAllResponse) ProtoMessage() {}
+
+func (x *ReadAllResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_todo_service_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReadAllResponse.ProtoReflect.Descriptor instead.
+func (*ReadAllResponse) Descriptor() ([]byte, []int) {
+	return file_todo_service_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ReadAllResponse) GetToDos() []*TransformedTodo {
+	if x != nil {
+		return x.ToDos
+	}
+	return nil
+}
+
 var File_todo_service_proto protoreflect.FileDescriptor
 
 var file_todo_service_proto_rawDesc = []byte{
@@ -612,22 +700,31 @@ var file_todo_service_proto_rawDesc = []byte{
 	0x69, 0x64, 0x22, 0x30, 0x0a, 0x0e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x6b, 0x65, 0x79, 0x44, 0x65, 0x6c, 0x65, 0x74,
 	0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0a, 0x6b, 0x65, 0x79, 0x44, 0x65, 0x6c,
-	0x65, 0x74, 0x65, 0x64, 0x32, 0xe8, 0x01, 0x0a, 0x10, 0x54, 0x6f, 0x64, 0x6f, 0x4d, 0x6f, 0x64,
-	0x65, 0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x35, 0x0a, 0x06, 0x43, 0x72, 0x65,
-	0x61, 0x74, 0x65, 0x12, 0x14, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x72, 0x65, 0x61,
-	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x2f, 0x0a, 0x04, 0x52, 0x65, 0x61, 0x64, 0x12, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2e, 0x52, 0x65, 0x61, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x13, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x61, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x35, 0x0a, 0x06, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x14, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x35, 0x0a, 0x06, 0x44, 0x65, 0x6c, 0x65,
-	0x74, 0x65, 0x12, 0x14, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x74, 0x65, 0x64, 0x22, 0x10, 0x0a, 0x0e, 0x52, 0x65, 0x61, 0x64, 0x41, 0x6c, 0x6c, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x3f, 0x0a, 0x0f, 0x52, 0x65, 0x61, 0x64, 0x41, 0x6c,
+	0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2c, 0x0a, 0x05, 0x74, 0x6f, 0x44,
+	0x6f, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d, 0x65, 0x64, 0x54, 0x6f, 0x64, 0x6f,
+	0x52, 0x05, 0x74, 0x6f, 0x44, 0x6f, 0x73, 0x32, 0xa2, 0x02, 0x0a, 0x10, 0x54, 0x6f, 0x64, 0x6f,
+	0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x35, 0x0a, 0x06,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x14, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43,
+	0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x2f, 0x0a, 0x04, 0x52, 0x65, 0x61, 0x64, 0x12, 0x12, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x61, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x13, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x61, 0x64, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x35, 0x0a, 0x06, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x14,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x64,
+	0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x35, 0x0a, 0x06, 0x44,
+	0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x14, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x38, 0x0a, 0x07, 0x52, 0x65, 0x61, 0x64, 0x41, 0x6c, 0x6c, 0x12, 0x15, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x61, 0x64, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x61,
+	0x64, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -642,7 +739,7 @@ func file_todo_service_proto_rawDescGZIP() []byte {
 	return file_todo_service_proto_rawDescData
 }
 
-var file_todo_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_todo_service_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_todo_service_proto_goTypes = []interface{}{
 	(*TodoModel)(nil),       // 0: proto.TodoModel
 	(*TransformedTodo)(nil), // 1: proto.TransformedTodo
@@ -654,24 +751,29 @@ var file_todo_service_proto_goTypes = []interface{}{
 	(*UpdateResponse)(nil),  // 7: proto.UpdateResponse
 	(*DeleteRequest)(nil),   // 8: proto.DeleteRequest
 	(*DeleteResponse)(nil),  // 9: proto.DeleteResponse
+	(*ReadAllRequest)(nil),  // 10: proto.ReadAllRequest
+	(*ReadAllResponse)(nil), // 11: proto.ReadAllResponse
 }
 var file_todo_service_proto_depIdxs = []int32{
-	0, // 0: proto.CreateRequest.toDo:type_name -> proto.TodoModel
-	1, // 1: proto.ReadResponse.toDo:type_name -> proto.TransformedTodo
-	0, // 2: proto.UpdateRequest.toDo:type_name -> proto.TodoModel
-	2, // 3: proto.TodoModelService.Create:input_type -> proto.CreateRequest
-	4, // 4: proto.TodoModelService.Read:input_type -> proto.ReadRequest
-	6, // 5: proto.TodoModelService.Update:input_type -> proto.UpdateRequest
-	8, // 6: proto.TodoModelService.Delete:input_type -> proto.DeleteRequest
-	3, // 7: proto.TodoModelService.Create:output_type -> proto.CreateResponse
-	5, // 8: proto.TodoModelService.Read:output_type -> proto.ReadResponse
-	7, // 9: proto.TodoModelService.Update:output_type -> proto.UpdateResponse
-	9, // 10: proto.TodoModelService.Delete:output_type -> proto.DeleteResponse
-	7, // [7:11] is the sub-list for method output_type
-	3, // [3:7] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0,  // 0: proto.CreateRequest.toDo:type_name -> proto.TodoModel
+	1,  // 1: proto.ReadResponse.toDo:type_name -> proto.TransformedTodo
+	0,  // 2: proto.UpdateRequest.toDo:type_name -> proto.TodoModel
+	1,  // 3: proto.ReadAllResponse.toDos:type_name -> proto.TransformedTodo
+	2,  // 4: proto.TodoModelService.Create:input_type -> proto.CreateRequest
+	4,  // 5: proto.TodoModelService.Read:input_type -> proto.ReadRequest
+	6,  // 6: proto.TodoModelService.Update:input_type -> proto.UpdateRequest
+	8,  // 7: proto.TodoModelService.Delete:input_type -> proto.DeleteRequest
+	10, // 8: proto.TodoModelService.ReadAll:input_type -> proto.ReadAllRequest
+	3,  // 9: proto.TodoModelService.Create:output_type -> proto.CreateResponse
+	5,  // 10: proto.TodoModelService.Read:output_type -> proto.ReadResponse
+	7,  // 11: proto.TodoModelService.Update:output_type -> proto.UpdateResponse
+	9,  // 12: proto.TodoModelService.Delete:output_type -> proto.DeleteResponse
+	11, // 13: proto.TodoModelService.ReadAll:output_type -> proto.ReadAllResponse
+	9,  // [9:14] is the sub-list for method output_type
+	4,  // [4:9] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_todo_service_proto_init() }
@@ -800,6 +902,30 @@ func file_todo_service_proto_init() {
 				return nil
 			}
 		}
+		file_todo_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ReadAllRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_todo_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ReadAllResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -807,7 +933,7 @@ func file_todo_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_todo_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -841,6 +967,8 @@ type TodoModelServiceClient interface {
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	// Delete todo task
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
+	// Read all todo tasks
+	ReadAll(ctx context.Context, in *ReadAllRequest, opts ...grpc.CallOption) (*ReadAllResponse, error)
 }
 
 type todoModelServiceClient struct {
@@ -887,6 +1015,15 @@ func (c *todoModelServiceClient) Delete(ctx context.Context, in *DeleteRequest, 
 	return out, nil
 }
 
+func (c *todoModelServiceClient) ReadAll(ctx context.Context, in *ReadAllRequest, opts ...grpc.CallOption) (*ReadAllResponse, error) {
+	out := new(ReadAllResponse)
+	err := c.cc.Invoke(ctx, "/proto.TodoModelService/ReadAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TodoModelServiceServer is the server API for TodoModelService service.
 type TodoModelServiceServer interface {
 	// Create new todo task
@@ -897,6 +1034,8 @@ type TodoModelServiceServer interface {
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	// Delete todo task
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
+	// Read all todo tasks
+	ReadAll(context.Context, *ReadAllRequest) (*ReadAllResponse, error)
 }
 
 // UnimplementedTodoModelServiceServer can be embedded to have forward compatible implementations.
@@ -914,6 +1053,9 @@ func (*UnimplementedTodoModelServiceServer) Update(context.Context, *UpdateReque
 }
 func (*UnimplementedTodoModelServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (*UnimplementedTodoModelServiceServer) ReadAll(context.Context, *ReadAllRequest) (*ReadAllResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadAll not implemented")
 }
 
 func RegisterTodoModelServiceServer(s *grpc.Server, srv TodoModelServiceServer) {
@@ -992,6 +1134,24 @@ func _TodoModelService_Delete_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TodoModelService_ReadAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReadAllRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TodoModelServiceServer).ReadAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.TodoModelService/ReadAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TodoModelServiceServer).ReadAll(ctx, req.(*ReadAllRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _TodoModelService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.TodoModelService",
 	HandlerType: (*TodoModelServiceServer)(nil),
@@ -1011,6 +1171,10 @@ var _TodoModelService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _TodoModelService_Delete_Handler,
+		},
+		{
+			MethodName: "ReadAll",
+			Handler:    _TodoModelService_ReadAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

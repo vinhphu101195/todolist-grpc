@@ -28,10 +28,16 @@ func main() {
 				c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Todo item created successfully!", "response": response.KeyCreated})
 			} else {
 				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-
 			}
 		})
-		//v1.GET("/", controller.FetchAllTodo)
+		v1.GET("/", func(c *gin.Context) {
+			req := &proto.ReadAllRequest{}
+			if response, err := client.ReadAll(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": response.ToDos})
+			} else {
+				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
+			}
+		})
 		v1.GET("/:id", func(c *gin.Context) {
 			todoID := c.Param("id")
 			req := &proto.ReadRequest{Id: todoID}
