@@ -88,4 +88,18 @@ func (s *server) Update(ctx context.Context, request *proto.UpdateRequest) (*pro
 
 }
 
-func ()
+func (s *server) Delete(ctx context.Context, request *proto.DeleteRequest) (*proto.DeleteResponse, error) {
+	db := s.db
+
+	var todo proto.TodoModel
+	todoID := request.GetId()
+	db.First(&todo, todoID)
+
+	if todo.Id == 0 {
+		return nil, status.Error(codes.Unknown, "No todo found!")
+	}
+
+	db.Delete(&todo)
+	return &proto.DeleteResponse{KeyDeleted: true}, nil
+
+}

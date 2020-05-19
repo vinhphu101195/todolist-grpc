@@ -51,7 +51,15 @@ func main() {
 				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
 			}
 		})
-		//v1.DELETE("/:id", controller.DeleteTodo)
+		v1.DELETE("/:id", func(c *gin.Context) {
+			todoID, _ := strconv.Atoi(c.Param("id"))
+			req := &proto.DeleteRequest{Id: int32(todoID)}
+			if _, err := client.Delete(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Todo deleted successfully!"})
+			} else {
+				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
+			}
+		})
 	}
 
 	if err := r.Run(":8080"); err != nil {

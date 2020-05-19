@@ -612,7 +612,7 @@ var file_todo_service_proto_rawDesc = []byte{
 	0x69, 0x64, 0x22, 0x30, 0x0a, 0x0e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x6b, 0x65, 0x79, 0x44, 0x65, 0x6c, 0x65, 0x74,
 	0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0a, 0x6b, 0x65, 0x79, 0x44, 0x65, 0x6c,
-	0x65, 0x74, 0x65, 0x64, 0x32, 0xb1, 0x01, 0x0a, 0x10, 0x54, 0x6f, 0x64, 0x6f, 0x4d, 0x6f, 0x64,
+	0x65, 0x74, 0x65, 0x64, 0x32, 0xe8, 0x01, 0x0a, 0x10, 0x54, 0x6f, 0x64, 0x6f, 0x4d, 0x6f, 0x64,
 	0x65, 0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x35, 0x0a, 0x06, 0x43, 0x72, 0x65,
 	0x61, 0x74, 0x65, 0x12, 0x14, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x72, 0x65, 0x61,
 	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74,
@@ -623,7 +623,11 @@ var file_todo_service_proto_rawDesc = []byte{
 	0x65, 0x12, 0x35, 0x0a, 0x06, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x14, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
 	0x74, 0x1a, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x35, 0x0a, 0x06, 0x44, 0x65, 0x6c, 0x65,
+	0x74, 0x65, 0x12, 0x14, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -658,11 +662,13 @@ var file_todo_service_proto_depIdxs = []int32{
 	2, // 3: proto.TodoModelService.Create:input_type -> proto.CreateRequest
 	4, // 4: proto.TodoModelService.Read:input_type -> proto.ReadRequest
 	6, // 5: proto.TodoModelService.Update:input_type -> proto.UpdateRequest
-	3, // 6: proto.TodoModelService.Create:output_type -> proto.CreateResponse
-	5, // 7: proto.TodoModelService.Read:output_type -> proto.ReadResponse
-	7, // 8: proto.TodoModelService.Update:output_type -> proto.UpdateResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
+	8, // 6: proto.TodoModelService.Delete:input_type -> proto.DeleteRequest
+	3, // 7: proto.TodoModelService.Create:output_type -> proto.CreateResponse
+	5, // 8: proto.TodoModelService.Read:output_type -> proto.ReadResponse
+	7, // 9: proto.TodoModelService.Update:output_type -> proto.UpdateResponse
+	9, // 10: proto.TodoModelService.Delete:output_type -> proto.DeleteResponse
+	7, // [7:11] is the sub-list for method output_type
+	3, // [3:7] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
 	3, // [3:3] is the sub-list for extension extendee
 	0, // [0:3] is the sub-list for field type_name
@@ -831,8 +837,10 @@ type TodoModelServiceClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	// Read todo task
 	Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error)
-	// // Update todo task;
+	// Update todo task;
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	// Delete todo task
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
 
 type todoModelServiceClient struct {
@@ -870,14 +878,25 @@ func (c *todoModelServiceClient) Update(ctx context.Context, in *UpdateRequest, 
 	return out, nil
 }
 
+func (c *todoModelServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, "/proto.TodoModelService/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TodoModelServiceServer is the server API for TodoModelService service.
 type TodoModelServiceServer interface {
 	// Create new todo task
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	// Read todo task
 	Read(context.Context, *ReadRequest) (*ReadResponse, error)
-	// // Update todo task;
+	// Update todo task;
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	// Delete todo task
+	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 }
 
 // UnimplementedTodoModelServiceServer can be embedded to have forward compatible implementations.
@@ -892,6 +911,9 @@ func (*UnimplementedTodoModelServiceServer) Read(context.Context, *ReadRequest) 
 }
 func (*UnimplementedTodoModelServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (*UnimplementedTodoModelServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
 func RegisterTodoModelServiceServer(s *grpc.Server, srv TodoModelServiceServer) {
@@ -952,6 +974,24 @@ func _TodoModelService_Update_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TodoModelService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TodoModelServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.TodoModelService/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TodoModelServiceServer).Delete(ctx, req.(*DeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _TodoModelService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.TodoModelService",
 	HandlerType: (*TodoModelServiceServer)(nil),
@@ -967,6 +1007,10 @@ var _TodoModelService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _TodoModelService_Update_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _TodoModelService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
