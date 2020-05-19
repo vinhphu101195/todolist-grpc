@@ -48,7 +48,6 @@ func (s *server) Create(ctx context.Context, request *proto.CreateRequest) (*pro
 func (s *server) Read(ctx context.Context, request *proto.ReadRequest) (*proto.ReadResponse, error) {
 	db := s.db
 
-	//check again
 	var todo proto.TodoModel
 	todoID := request.GetId()
 	db.First(&todo, todoID)
