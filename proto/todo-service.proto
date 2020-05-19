@@ -63,13 +63,11 @@ message UpdateRequest{
 message UpdateResponse{
 
     // Contains number of entities have beed updated
-    // Equals 1 in case of succesfull update
-    bool keyUpdated = 1;
+     string messageUdated = 1;
 }
 
 // Request data to delete todo task
 message DeleteRequest{
-
     // Unique integer identifier of the todo task to delete
     int32 id = 1;
 }
@@ -79,7 +77,7 @@ message DeleteResponse{
 
     // Contains number of entities have beed deleted
     // Equals 1 in case of succesfull delete
-    bool keyDeleted = 1;
+    string messageDeleted = 1;
 }
 
 // Request data to read all todo task

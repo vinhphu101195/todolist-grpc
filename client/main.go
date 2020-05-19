@@ -51,8 +51,8 @@ func main() {
 			todoID, _ := strconv.Atoi(c.Param("id"))
 			completed, _ := strconv.Atoi(c.PostForm("completed"))
 			req := &proto.UpdateRequest{ToDo: &proto.TodoModel{Id: int32(todoID), Title: c.PostForm("title"), Completed: int32(completed)}}
-			if _, err := client.Update(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Todo updated successfully!"})
+			if response, err := client.Update(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": response.MessageUdated})
 			} else {
 				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
 			}
@@ -60,8 +60,8 @@ func main() {
 		v1.DELETE("/:id", func(c *gin.Context) {
 			todoID, _ := strconv.Atoi(c.Param("id"))
 			req := &proto.DeleteRequest{Id: int32(todoID)}
-			if _, err := client.Delete(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Todo deleted successfully!"})
+			if response, err := client.Delete(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": response.MessageDeleted})
 			} else {
 				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
 			}

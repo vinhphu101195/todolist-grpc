@@ -84,7 +84,7 @@ func (s *server) Update(ctx context.Context, request *proto.UpdateRequest) (*pro
 	db.Model(&todo).Update("title", title)
 	db.Model(&todo).Update("completed", completed)
 
-	return &proto.UpdateResponse{KeyUpdated: true}, nil
+	return &proto.UpdateResponse{MessageUdated: "Todo updated successfully! "}, nil
 }
 
 func (s *server) Delete(ctx context.Context, request *proto.DeleteRequest) (*proto.DeleteResponse, error) {
@@ -99,7 +99,7 @@ func (s *server) Delete(ctx context.Context, request *proto.DeleteRequest) (*pro
 	}
 
 	db.Delete(&todo)
-	return &proto.DeleteResponse{KeyDeleted: true}, nil
+	return &proto.DeleteResponse{MessageDeleted: "Todo deleted successfully!"}, nil
 }
 
 func (s *server) ReadAll(ctx context.Context, request *proto.ReadAllRequest) (*proto.ReadAllResponse, error) {
