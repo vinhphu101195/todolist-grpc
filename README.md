@@ -8,3 +8,6 @@
 ### PUT: http://localhost:8080/api/v1/todos/:id
 ### DELETE: http://localhost:8080/api/v1/todos/:id
 
+### --------------------------------------------------------------------------------------------------
+### To create and edit the todo task, we use struct: title(string), completed (1 is true,else is false), userid(int).
+### userid, and the rest will be created by gorm framework
