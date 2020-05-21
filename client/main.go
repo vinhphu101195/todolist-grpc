@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"todo-grpc/proto"
+	"todo-grpc/todoList/proto"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"

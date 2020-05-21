@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"net"
-	"todo-grpc/models"
-	"todo-grpc/proto"
+	"todo-grpc/todoList/models"
+	"todo-grpc/todoList/proto"
 
 	"github.com/jinzhu/gorm"
 	"google.golang.org/grpc"
