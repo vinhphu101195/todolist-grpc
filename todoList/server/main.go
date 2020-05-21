@@ -37,7 +37,6 @@ func main() {
 
 func (s *server) Create(ctx context.Context, request *proto.CreateRequest) (*proto.CreateResponse, error) {
 	db := s.db
-	//completed, userid, id, title := request.GetCompleted(), request.GetUserid(), request.GetId(), request.GetTitle()
 	todo := request.GetToDo()
 
 	result := db.NewRecord(&todo)
