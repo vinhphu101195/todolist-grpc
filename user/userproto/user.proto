@@ -3,7 +3,7 @@ syntax = "proto3";
 package userproto;
 
 message UserModel{
-    int32 userid = 1;
+    int32 id = 1;
     string username = 2;
     string password = 3;
     string email = 4;

@@ -99,6 +99,35 @@ func main() {
 				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
 			}
 		})
+		user.GET("/:userid", func(c *gin.Context) {
+			userID := c.Param("userid")
+			req := &userproto.GetUserRequest{Userid: userID}
+			if response, err := UserClient.GetUser(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": response.User})
+			} else {
+				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
+			}
+		})
+		user.PUT("/:userid", func(c *gin.Context) {
+			userID, _ := strconv.Atoi(c.Param("userid"))
+			password := c.PostForm("password")
+			email := c.PostForm("email")
+			req := &userproto.UpdateUserRequest{User: &userproto.UserModel{Id: int32(userID), Password: password, Email: email}}
+			if response, err := UserClient.UpdateUser(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": response.MessageUdated})
+			} else {
+				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
+			}
+		})
+		user.DELETE("/:userid", func(c *gin.Context) {
+			userID, _ := strconv.Atoi(c.Param("userid"))
+			req := &userproto.DeleteUserRequest{Userid: int32(userID)}
+			if response, err := UserClient.DeleteUser(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": response.MessageDeleted})
+			} else {
+				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
+			}
+		})
 	}
 
 	if err := r.Run(":8080"); err != nil {

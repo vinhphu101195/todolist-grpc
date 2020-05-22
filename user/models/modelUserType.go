@@ -1,17 +1,15 @@
 package models
 
-import "time"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type (
 	// UserModel describes a UserModel type
 	UserModel struct {
-		Userid   uint   `json:"userid" gorm:"primary_key;AUTO_INCREMENT"`
+		gorm.Model
 		Username string `json:"userName"`
 		Password string `json:"password"`
 		Email    string `json:"email"`
-
-		CreatedAt time.Time
-		UpdatedAt time.Time
-		DeletedAt *time.Time `sql:"index"`
 	}
 )

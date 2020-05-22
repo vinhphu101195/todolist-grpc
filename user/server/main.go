@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"todo-grpc/user/models"
 	"todo-grpc/user/userproto"
@@ -59,7 +60,8 @@ func (s *userServer) GetUser(ctx context.Context, request *userproto.GetUserRequ
 	var user userproto.UserModel
 	userID := request.GetUserid()
 	db.First(&user, userID)
-	if user.Userid == 0 {
+
+	if user.Id == 0 {
 		return nil, status.Error(codes.Unknown, "No user found!")
 	}
 
@@ -70,17 +72,20 @@ func (s *userServer) UpdateUser(ctx context.Context, request *userproto.UpdateUs
 	db := s.db
 
 	var user userproto.UserModel
-	userID := request.GetUser().Userid
+	userID := request.GetUser().Id
 	password := request.GetUser().Password
 	email := request.GetUser().Email
 	db.First(&user, userID)
-	if user.Userid == 0 {
+
+	if user.Id == 0 {
 		return nil, status.Error(codes.Unknown, "No user found!")
 	}
 
+	fmt.Println(&user)
+	fmt.Println(user.Id)
 	db.Model(&user).Update("password", password)
-	db.Model(&user).Update("completed", email)
-
+	db.Model(&user).Update("email", email)
+	fmt.Println(&user)
 	return &userproto.UpdateUserResponse{MessageUdated: "User updated successfully! "}, nil
 
 }
@@ -92,7 +97,7 @@ func (s *userServer) DeleteUser(ctx context.Context, request *userproto.DeleteUs
 	userID := request.GetUserid()
 	db.First(&user, userID)
 
-	if user.Userid == 0 {
+	if user.Id == 0 {
 		return nil, status.Error(codes.Unknown, "No todo found!")
 	}
 
