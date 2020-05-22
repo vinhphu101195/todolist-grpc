@@ -18,56 +18,56 @@ message RegisterResponse{
 }
 
 
-// // Request data to read user
-// message GetUserRequest{
+// Request data to read user
+message GetUserRequest{
 
-//     // Unique integer identifier of the user
-//     string id = 1;
-// }
+    // Unique integer identifier of the user
+    string id = 1;
+}
 
-// // Contains user data specified in by ID request
-// message GetUserResponse{
+// Contains user data specified in by ID request
+message GetUserResponse{
 
-//     // Task entity read by ID
-//     UserModel User = 1;
-// }
+    // Task entity read by ID
+    UserModel User = 1;
+}
 
-// // Request data to update user
-// message UpdateUserRequest{
+// Request data to update user
+message UpdateUserRequest{
 
-//     // Task entity to update
-//     UserModel User = 1;
-// }
+    // Task entity to update
+    UserModel User = 1;
+}
 
-// // Contains status of update operation
-// message UpdateUserResponse{
+// Contains status of update operation
+message UpdateUserResponse{
 
-//     // Contains number of entities have beed updated
-//      string messageUdated = 1;
-// }
+    // Contains number of entities have beed updated
+     string messageUdated = 1;
+}
 
-// // Request data to delete user
-// message DeleteUserRequest{
-//     // Unique integer identifier of the user to delete
-//     int32 userid = 1;
-// }
+// Request data to delete user
+message DeleteUserRequest{
+    // Unique integer identifier of the user to delete
+    int32 userid = 1;
+}
 
-// // Contains status of delete operation
-// message DeleteUserResponse{
+// Contains status of delete operation
+message DeleteUserResponse{
 
-//     // Contains number of entities have beed deleted
-//     // Equals 1 in case of succesfull delete
-//     string messageDeleted = 1;
-// }
+    // Contains number of entities have beed deleted
+    // Equals 1 in case of succesfull delete
+    string messageDeleted = 1;
+}
 
-// Request data to read all user
+//Request data to read all user
 message GetAllUserRequest{
 }
 
-// Contains list of all users
+//Contains list of all users
 message GetAllUserResponse{
 
-    // List of all users
+    //List of all users
     repeated UserModel Users = 1;
 }
 
@@ -75,12 +75,12 @@ message GetAllUserResponse{
 service UserModelService {
     // Create new user
     rpc Register(RegisterRequest) returns (RegisterResponse);
-    // // Get user
-    // rpc getUser(GetUserRequest) returns (GetUserResponse);
-    // // Update user;
-    // rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
-    // // Delete user
-    // rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
-    // // Get all users
+    // Get user
+    rpc getUser(GetUserRequest) returns (GetUserResponse);
+    // Update user;
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+    // Delete user
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+    // Get all users
     rpc GetAllUser(GetAllUserRequest) returns (GetAllUserResponse);
 }

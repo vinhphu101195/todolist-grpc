@@ -37,7 +37,7 @@ func (s *userServer) Register(ctx context.Context, request *userproto.RegisterRe
 	user := request.GetUser()
 
 	result := db.NewRecord(&user)
-
+	db.Create(&user)
 	return &userproto.RegisterResponse{KeyRegister: result}, nil
 }
 
@@ -47,7 +47,7 @@ func (s *userServer) GetAllUser(ctx context.Context, request *userproto.GetAllUs
 
 	db.Find(&_users)
 	if len(_users) <= 0 {
-		return nil, status.Error(codes.Unknown, "No todo found!")
+		return nil, status.Error(codes.Unknown, "No User found!")
 	}
 
 	return &userproto.GetAllUserResponse{Users: _users}, nil

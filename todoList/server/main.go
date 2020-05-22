@@ -40,7 +40,7 @@ func (s *server) Create(ctx context.Context, request *proto.CreateRequest) (*pro
 	todo := request.GetToDo()
 
 	result := db.NewRecord(&todo)
-
+	db.Create(&todo)
 	return &proto.CreateResponse{KeyCreated: result}, nil
 }
 

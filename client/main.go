@@ -20,7 +20,7 @@ func main() {
 	todoClient := proto.NewTodoModelServiceClient(conn)
 
 	// connect User
-	connUser, errUser := grpc.Dial("localHost:8001", grpc.WithInsecure())
+	connUser, errUser := grpc.Dial("localhost:8001", grpc.WithInsecure())
 	if errUser != nil {
 		panic(err)
 	}
