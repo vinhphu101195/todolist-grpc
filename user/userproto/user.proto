@@ -22,7 +22,7 @@ message RegisterResponse{
 message GetUserRequest{
 
     // Unique integer identifier of the user
-    string id = 1;
+    string userid = 1;
 }
 
 // Contains user data specified in by ID request
@@ -76,7 +76,7 @@ service UserModelService {
     // Create new user
     rpc Register(RegisterRequest) returns (RegisterResponse);
     // Get user
-    rpc getUser(GetUserRequest) returns (GetUserResponse);
+    rpc GetUser(GetUserRequest) returns (GetUserResponse);
     // Update user;
     rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
     // Delete user

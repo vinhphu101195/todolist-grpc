@@ -52,3 +52,51 @@ func (s *userServer) GetAllUser(ctx context.Context, request *userproto.GetAllUs
 
 	return &userproto.GetAllUserResponse{Users: _users}, nil
 }
+
+func (s *userServer) GetUser(ctx context.Context, request *userproto.GetUserRequest) (*userproto.GetUserResponse, error) {
+	db := s.db
+
+	var user userproto.UserModel
+	userID := request.GetUserid()
+	db.First(&user, userID)
+	if user.Userid == 0 {
+		return nil, status.Error(codes.Unknown, "No user found!")
+	}
+
+	return &userproto.GetUserResponse{User: &user}, nil
+}
+
+func (s *userServer) UpdateUser(ctx context.Context, request *userproto.UpdateUserRequest) (*userproto.UpdateUserResponse, error) {
+	db := s.db
+
+	var user userproto.UserModel
+	userID := request.GetUser().Userid
+	password := request.GetUser().Password
+	email := request.GetUser().Email
+	db.First(&user, userID)
+	if user.Userid == 0 {
+		return nil, status.Error(codes.Unknown, "No user found!")
+	}
+
+	db.Model(&user).Update("password", password)
+	db.Model(&user).Update("completed", email)
+
+	return &userproto.UpdateUserResponse{MessageUdated: "User updated successfully! "}, nil
+
+}
+
+func (s *userServer) DeleteUser(ctx context.Context, request *userproto.DeleteUserRequest) (*userproto.DeleteUserResponse, error) {
+	db := s.db
+
+	var user userproto.UserModel
+	userID := request.GetUserid()
+	db.First(&user, userID)
+
+	if user.Userid == 0 {
+		return nil, status.Error(codes.Unknown, "No todo found!")
+	}
+
+	db.Delete(&user)
+	return &userproto.DeleteUserResponse{MessageDeleted: "Todo deleted successfully!"}, nil
+
+}
