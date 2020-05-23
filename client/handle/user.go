@@ -10,7 +10,8 @@ import (
 
 // GetAllUser ...
 func GetAllUser(c *gin.Context) {
-	UserClient := initUser()
+	UserClient, connect := initUser()
+	defer connect.Close()
 
 	req := &userproto.GetAllUserRequest{}
 	if response, err := UserClient.GetAllUser(c, req); err == nil {
@@ -22,7 +23,8 @@ func GetAllUser(c *gin.Context) {
 
 //GetUserSingle ...
 func GetUserSingle(c *gin.Context) {
-	UserClient := initUser()
+	UserClient, connect := initUser()
+	defer connect.Close()
 
 	userID := c.Param("userid")
 	req := &userproto.GetUserRequest{Userid: userID}
@@ -35,7 +37,8 @@ func GetUserSingle(c *gin.Context) {
 
 //UpdateUser ...
 func UpdateUser(c *gin.Context) {
-	UserClient := initUser()
+	UserClient, connect := initUser()
+	defer connect.Close()
 
 	userID, _ := strconv.Atoi(c.Param("userid"))
 	password := c.PostForm("password")
@@ -50,7 +53,8 @@ func UpdateUser(c *gin.Context) {
 
 // DeleteUser ...
 func DeleteUser(c *gin.Context) {
-	UserClient := initUser()
+	UserClient, connect := initUser()
+	defer connect.Close()
 
 	userID, _ := strconv.Atoi(c.Param("userid"))
 	req := &userproto.DeleteUserRequest{Userid: int32(userID)}

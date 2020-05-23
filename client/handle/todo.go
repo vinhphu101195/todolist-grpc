@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func initTodo() proto.TodoModelServiceClient {
+func initTodo() (proto.TodoModelServiceClient, *grpc.ClientConn) {
 	// connect todoList
 	conn, err := grpc.Dial("localhost:8000", grpc.WithInsecure())
 	if err != nil {
@@ -17,12 +17,13 @@ func initTodo() proto.TodoModelServiceClient {
 	}
 	todoClient := proto.NewTodoModelServiceClient(conn)
 
-	return todoClient
+	return todoClient, conn
 }
 
 //CreteTodo ...
 func CreteTodo(c *gin.Context) {
-	todoClient := initTodo()
+	todoClient, connect := initTodo()
+	defer connect.Close()
 
 	completed, _ := strconv.Atoi(c.PostForm("completed"))
 	userid, _ := strconv.Atoi(c.PostForm("userid"))
@@ -36,7 +37,8 @@ func CreteTodo(c *gin.Context) {
 
 // GetAllTodo ...
 func GetAllTodo(c *gin.Context) {
-	todoClient := initTodo()
+	todoClient, connect := initTodo()
+	defer connect.Close()
 
 	req := &proto.ReadAllRequest{}
 	if response, err := todoClient.ReadAll(c, req); err == nil {
@@ -48,7 +50,8 @@ func GetAllTodo(c *gin.Context) {
 
 //GetSingleTodo ...
 func GetSingleTodo(c *gin.Context) {
-	todoClient := initTodo()
+	todoClient, connect := initTodo()
+	defer connect.Close()
 
 	todoID := c.Param("id")
 	req := &proto.ReadRequest{Id: todoID}
@@ -61,7 +64,8 @@ func GetSingleTodo(c *gin.Context) {
 
 //UpdateTodo ...
 func UpdateTodo(c *gin.Context) {
-	todoClient := initTodo()
+	todoClient, connect := initTodo()
+	defer connect.Close()
 
 	todoID, _ := strconv.Atoi(c.Param("id"))
 	completed, _ := strconv.Atoi(c.PostForm("completed"))
@@ -75,7 +79,8 @@ func UpdateTodo(c *gin.Context) {
 
 //DeleteTodo ...
 func DeleteTodo(c *gin.Context) {
-	todoClient := initTodo()
+	todoClient, connect := initTodo()
+	defer connect.Close()
 
 	todoID, _ := strconv.Atoi(c.Param("id"))
 	req := &proto.DeleteRequest{Id: int32(todoID)}

@@ -10,7 +10,7 @@ import (
 )
 
 //initUser ...
-func initUser() userproto.UserModelServiceClient {
+func initUser() (userproto.UserModelServiceClient, *grpc.ClientConn) {
 	// connect User
 	connUser, errUser := grpc.Dial("localhost:8001", grpc.WithInsecure())
 	if errUser != nil {
@@ -18,12 +18,13 @@ func initUser() userproto.UserModelServiceClient {
 	}
 	userClient := userproto.NewUserModelServiceClient(connUser)
 
-	return userClient
+	return userClient, connUser
 }
 
 // Login ...
 func Login(c *gin.Context) {
-	UserClient := initUser()
+	UserClient, connect := initUser()
+	defer connect.Close()
 
 	session := sessions.Default(c)
 
@@ -48,7 +49,8 @@ func Login(c *gin.Context) {
 
 // Register ...
 func Register(c *gin.Context) {
-	UserClient := initUser()
+	UserClient, connect := initUser()
+	defer connect.Close()
 
 	username := c.PostForm("username")
 	password := c.PostForm("password")
