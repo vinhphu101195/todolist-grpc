@@ -71,6 +71,16 @@ message GetAllUserResponse{
     repeated UserModel Users = 1;
 }
 
+message LoginRequest{
+    string username=1;
+    string password=2;
+}
+
+message LoginResponse{
+    bool success=1;
+}
+
+
 // Service to manage list of users
 service UserModelService {
     // Create new user
@@ -83,4 +93,6 @@ service UserModelService {
     rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
     // Get all users
     rpc GetAllUser(GetAllUserRequest) returns (GetAllUserResponse);
+    // User Login
+    rpc Login(LoginRequest) returns (LoginResponse);
 }

@@ -7,9 +7,23 @@ import (
 	"todo-grpc/todoList/proto"
 	"todo-grpc/user/userproto"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 )
+
+// Authorize ...
+func Authorize(ctx *gin.Context) {
+	session := sessions.Default(ctx)
+
+	if session.Get("Auth") != true {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauth"})
+		ctx.Abort()
+		return
+	}
+	ctx.Next()
+}
 
 func main() {
 	// connect todoList
@@ -28,7 +42,52 @@ func main() {
 
 	r := gin.Default()
 
+	store := cookie.NewStore([]byte("secret"))
+	r.Use(sessions.Sessions("mysession", store))
+
+	r.POST("/login", func(c *gin.Context) {
+		session := sessions.Default(c)
+
+		if session.Get("Auth") == true {
+			c.JSON(http.StatusConflict, gin.H{"error": "Already login!!!"})
+			return
+		}
+
+		userName := c.PostForm("username")
+		userPassword := c.PostForm("password")
+
+		req := &userproto.LoginRequest{Username: userName, Password: userPassword}
+		if response, err := UserClient.Login(c, req); err == nil {
+			session.Set("Auth", true)
+			session.Set("AuthUserName", userName)
+			session.Save()
+			c.JSON(http.StatusOK, gin.H{"status": "login successed", "message": response.Success})
+		} else {
+			c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
+		}
+	})
+	r.POST("/user/register", func(c *gin.Context) {
+		username := c.PostForm("username")
+		password := c.PostForm("password")
+		email := c.PostForm("email")
+		req := &userproto.RegisterRequest{User: &userproto.UserModel{Username: username, Password: password, Email: email}}
+		if response, err := UserClient.Register(c, req); err == nil {
+			c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "User Register successfully!", "response": response.KeyRegister})
+		} else {
+			c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
+		}
+	})
+	r.GET("/logout", Authorize, func(c *gin.Context) {
+		session := sessions.Default(c)
+		session.Set("Auth", false)
+		session.Set("AuthUserName", nil)
+		session.Save()
+
+		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "logout successed"})
+	})
+
 	v1 := r.Group("/api/v1/todos")
+	v1.Use(Authorize)
 	{
 		v1.POST("/", func(c *gin.Context) {
 			completed, _ := strconv.Atoi(c.PostForm("completed"))
@@ -79,18 +138,9 @@ func main() {
 	}
 
 	user := r.Group("/user")
+	user.Use(Authorize)
 	{
-		user.POST("/", func(c *gin.Context) {
-			username := c.PostForm("username")
-			password := c.PostForm("password")
-			email := c.PostForm("email")
-			req := &userproto.RegisterRequest{User: &userproto.UserModel{Username: username, Password: password, Email: email}}
-			if response, err := UserClient.Register(c, req); err == nil {
-				c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "User Register successfully!", "response": response.KeyRegister})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
+
 		user.GET("/", func(c *gin.Context) {
 			req := &userproto.GetAllUserRequest{}
 			if response, err := UserClient.GetAllUser(c, req); err == nil {
@@ -128,6 +178,7 @@ func main() {
 				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
 			}
 		})
+
 	}
 
 	if err := r.Run(":8080"); err != nil {
