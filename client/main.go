@@ -3,14 +3,11 @@ package main
 import (
 	"log"
 	"net/http"
-	"strconv"
-	"todo-grpc/todoList/proto"
-	"todo-grpc/user/userproto"
+	"todo-grpc/client/handle"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"google.golang.org/grpc"
 )
 
 // Authorize ...
@@ -26,159 +23,32 @@ func Authorize(ctx *gin.Context) {
 }
 
 func main() {
-	// connect todoList
-	conn, err := grpc.Dial("localhost:8000", grpc.WithInsecure())
-	if err != nil {
-		panic(err)
-	}
-	todoClient := proto.NewTodoModelServiceClient(conn)
-
-	// connect User
-	connUser, errUser := grpc.Dial("localhost:8001", grpc.WithInsecure())
-	if errUser != nil {
-		panic(err)
-	}
-	UserClient := userproto.NewUserModelServiceClient(connUser)
-
 	r := gin.Default()
 
 	store := cookie.NewStore([]byte("secret"))
 	r.Use(sessions.Sessions("mysession", store))
 
-	r.POST("/login", func(c *gin.Context) {
-		session := sessions.Default(c)
-
-		if session.Get("Auth") == true {
-			c.JSON(http.StatusConflict, gin.H{"error": "Already login!!!"})
-			return
-		}
-
-		userName := c.PostForm("username")
-		userPassword := c.PostForm("password")
-
-		req := &userproto.LoginRequest{Username: userName, Password: userPassword}
-		if response, err := UserClient.Login(c, req); err == nil {
-			session.Set("Auth", true)
-			session.Set("AuthUserName", userName)
-			session.Save()
-			c.JSON(http.StatusOK, gin.H{"status": "login successed", "message": response.Success})
-		} else {
-			c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-		}
-	})
-	r.POST("/user/register", func(c *gin.Context) {
-		username := c.PostForm("username")
-		password := c.PostForm("password")
-		email := c.PostForm("email")
-		req := &userproto.RegisterRequest{User: &userproto.UserModel{Username: username, Password: password, Email: email}}
-		if response, err := UserClient.Register(c, req); err == nil {
-			c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "User Register successfully!", "response": response.KeyRegister})
-		} else {
-			c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-		}
-	})
-	r.GET("/logout", Authorize, func(c *gin.Context) {
-		session := sessions.Default(c)
-		session.Set("Auth", false)
-		session.Set("AuthUserName", nil)
-		session.Save()
-
-		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "logout successed"})
-	})
+	r.POST("/login", handle.Login)
+	r.POST("/user/register", handle.Register)
+	r.GET("/logout", Authorize, handle.Logout)
 
 	v1 := r.Group("/api/v1/todos")
 	v1.Use(Authorize)
 	{
-		v1.POST("/", func(c *gin.Context) {
-			completed, _ := strconv.Atoi(c.PostForm("completed"))
-			userid, _ := strconv.Atoi(c.PostForm("userid"))
-			req := &proto.CreateRequest{ToDo: &proto.TodoModel{Title: c.PostForm("title"), Completed: int32(completed), Userid: int32(userid)}}
-			if response, err := todoClient.Create(c, req); err == nil {
-				c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Todo item created successfully!", "response": response.KeyCreated})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
-		v1.GET("/", func(c *gin.Context) {
-			req := &proto.ReadAllRequest{}
-			if response, err := todoClient.ReadAll(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": response.ToDos})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
-		v1.GET("/:id", func(c *gin.Context) {
-			todoID := c.Param("id")
-			req := &proto.ReadRequest{Id: todoID}
-			if response, err := todoClient.Read(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": response.ToDo})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
-		v1.PUT("/:id", func(c *gin.Context) {
-			todoID, _ := strconv.Atoi(c.Param("id"))
-			completed, _ := strconv.Atoi(c.PostForm("completed"))
-			req := &proto.UpdateRequest{ToDo: &proto.TodoModel{Id: int32(todoID), Title: c.PostForm("title"), Completed: int32(completed)}}
-			if response, err := todoClient.Update(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": response.MessageUdated})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
-		v1.DELETE("/:id", func(c *gin.Context) {
-			todoID, _ := strconv.Atoi(c.Param("id"))
-			req := &proto.DeleteRequest{Id: int32(todoID)}
-			if response, err := todoClient.Delete(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": response.MessageDeleted})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
+		v1.POST("/", handle.CreteTodo)
+		v1.GET("/", handle.GetAllTodo)
+		v1.GET("/:id", handle.GetSingleTodo)
+		v1.PUT("/:id", handle.UpdateTodo)
+		v1.DELETE("/:id", handle.DeleteTodo)
 	}
 
 	user := r.Group("/user")
 	user.Use(Authorize)
 	{
-
-		user.GET("/", func(c *gin.Context) {
-			req := &userproto.GetAllUserRequest{}
-			if response, err := UserClient.GetAllUser(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": response.Users})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
-		user.GET("/:userid", func(c *gin.Context) {
-			userID := c.Param("userid")
-			req := &userproto.GetUserRequest{Userid: userID}
-			if response, err := UserClient.GetUser(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": response.User})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
-		user.PUT("/:userid", func(c *gin.Context) {
-			userID, _ := strconv.Atoi(c.Param("userid"))
-			password := c.PostForm("password")
-			email := c.PostForm("email")
-			req := &userproto.UpdateUserRequest{User: &userproto.UserModel{Id: int32(userID), Password: password, Email: email}}
-			if response, err := UserClient.UpdateUser(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": response.MessageUdated})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
-		user.DELETE("/:userid", func(c *gin.Context) {
-			userID, _ := strconv.Atoi(c.Param("userid"))
-			req := &userproto.DeleteUserRequest{Userid: int32(userID)}
-			if response, err := UserClient.DeleteUser(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": response.MessageDeleted})
-			} else {
-				c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
-			}
-		})
-
+		user.GET("/", handle.GetAllUser)
+		user.GET("/:userid", handle.GetUserSingle)
+		user.PUT("/:userid", handle.UpdateUser)
+		user.DELETE("/:userid", handle.DeleteUser)
 	}
 
 	if err := r.Run(":8080"); err != nil {
