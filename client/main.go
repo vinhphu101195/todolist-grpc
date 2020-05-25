@@ -29,7 +29,7 @@ func main() {
 	r.Use(sessions.Sessions("mysession", store))
 
 	r.POST("/login", handle.Login)
-	r.POST("/user/register", handle.Register)
+	r.POST("/register", handle.Register)
 	r.GET("/logout", Authorize, handle.Logout)
 
 	v1 := r.Group("/api/v1/todos")

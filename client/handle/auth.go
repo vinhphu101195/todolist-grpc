@@ -39,9 +39,9 @@ func Login(c *gin.Context) {
 	req := &userproto.LoginRequest{Username: userName, Password: userPassword}
 	if response, err := UserClient.Login(c, req); err == nil {
 		session.Set("Auth", true)
-		session.Set("AuthUserName", userName)
+		session.Set("AuthUserId", response.UserId)
 		session.Save()
-		c.JSON(http.StatusOK, gin.H{"status": "login successed", "message": response.Success})
+		c.JSON(http.StatusOK, gin.H{"status": "login successed", "message": response.Success, "UserId": response.UserId})
 	} else {
 		c.JSON(http.StatusCreated, gin.H{"error": err.Error()})
 	}

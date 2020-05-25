@@ -1,8 +1,22 @@
 # todolist-grpc
-## to run app: run main.go in client folder, and run main.go in server folder by go run main.go
+## to run app: run main.go
+## in client folder
+## in user/server folder
+## in todoList/server folder 
 
 ### Listening and serving HTTP on :8080
 
+### Register POST : http://localhost:8080/register
+### login POST: http://localhost:8080/login
+### logout GET: http://localhost:8080/logout
+
+### for user profile
+### GET all: http://localhost:8080/user
+### GET by ID: http://localhost:8080/user/:userid
+### PUT: http://localhost:8080/user/:userid
+### DELETE: http://localhost:8080/user/:userid
+
+### for todo task
 ### GET all: http://localhost:8080/api/v1/todos/
 ### GET by ID: http://localhost:8080/api/v1/todos/:id
 ### POST: http://localhost:8080/api/v1/todos/

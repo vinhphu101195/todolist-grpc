@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"todo-grpc/todoList/proto"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 )
@@ -24,10 +25,16 @@ func initTodo() (proto.TodoModelServiceClient, *grpc.ClientConn) {
 func CreteTodo(c *gin.Context) {
 	todoClient, connect := initTodo()
 	defer connect.Close()
+	session := sessions.Default(c)
 
 	completed, _ := strconv.Atoi(c.PostForm("completed"))
-	userid, _ := strconv.Atoi(c.PostForm("userid"))
-	req := &proto.CreateRequest{ToDo: &proto.TodoModel{Title: c.PostForm("title"), Completed: int32(completed), Userid: int32(userid)}}
+	userid := session.Get("AuthUserId")
+	if userid == nil {
+		c.JSON(http.StatusCreated, gin.H{"error": "unknow user"})
+		return
+	}
+
+	req := &proto.CreateRequest{ToDo: &proto.TodoModel{Title: c.PostForm("title"), Completed: int32(completed), Userid: userid.(int32)}}
 	if response, err := todoClient.Create(c, req); err == nil {
 		c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Todo item created successfully!", "response": response.KeyCreated})
 	} else {

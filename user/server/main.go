@@ -119,6 +119,6 @@ func (s *userServer) Login(ctx context.Context, request *userproto.LoginRequest)
 		return nil, status.Error(codes.Unknown, "Wrong password")
 	}
 
-	return &userproto.LoginResponse{Success: true}, nil
+	return &userproto.LoginResponse{Success: true, UserId: user.Id}, nil
 
 }
